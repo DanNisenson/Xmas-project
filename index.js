@@ -1,6 +1,8 @@
 let superheroes = require("./assets/superhero.json");
 const express = require("express");
-const idCheck = require("./middlewares/validation/idCheck.js")
+const { check, body } = require("express-validator");
+const idCheck = require("./middlewares/validation/idCheck.js");
+const { isDuplicate, addHeroValidation, heroValidation} = require("./middlewares/validation/addHeroValidation")
 const app = express();
 const port = 3003;
 
@@ -59,13 +61,28 @@ app
   //     res.status(400).send("Invalid id");
   //   }
   // });
-
-  // PUT single hero
-  app.post('/', , (req, res) => {
+  
+  // POST single hero
+  app.post('/', addHeroValidation, heroValidation, (req, res) => {
     const body = req.body;
 
-    res.status(200).json(body);
+    // Check if already stored.
+    //  There has to be a way to do this proper.
+    if (isDuplicate(body.name, superheroes) !== -1) return res.status(400).json({ errors: "Super hero already included" });
+
+    const newId = superheroes[superheroes.length -1].id + 1;
+
+    superheroes = [
+      ...superheroes,
+      {
+        id: newId,
+        ...body
+      }
+    ]
+
+    res.status(200).json(superheroes);
   });
+
 
 
 
