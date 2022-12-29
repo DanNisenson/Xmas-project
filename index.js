@@ -1,4 +1,4 @@
-const superheroes = require("./assets/superhero.json");
+let superheroes = require("./assets/superhero.json");
 const express = require("express");
 const app = express();
 const port = 3003;
@@ -6,34 +6,55 @@ const port = 3003;
 app.use(express.json());
 // app.use(express.urlencoded());
 
+const idCheck = (paramsId) => {
+  let id = parseInt(paramsId);
+
+  if (!id || id < 1 || id > 20) {
+    return false;
+  } else {
+    return id;
+  }
+};
+
 // METHODS
 
+// all superheroes
 app.get("/", (req, res) => {
   res.status(200).json(superheroes);
 });
 
-app.get("/:id", (req, res) => {
-  let id = parseInt(req.params.id);
+// single hero
+app
+  .route("/:id")
+  .get((req, res) => {
+    const id = idCheck(req.params.id);
 
-  if ( !id || id < 1 || id > 20 ) {
-    console.log('first')
-    res.status(400).send('Invalid id').end();
+    if (id) {
+      const singleHero = superheroes.filter((hero) => hero.id === id);
+      res.status(200).json(singleHero);
+    } else {
+      res.status(400).send("Invalid id");
+    }
+  })
+  .delete((req, res) => {
+    const id = idCheck(req.params.id);
 
-  } else {
-    id = parseInt(id);
-    const singleHero = superheroes.filter(hero => hero.id === id);
-    res.status(200).json(singleHero);
-  }
-});
-
-
-// app.delete("/", (req, res) => {
-//   res.status(200).json(superheroes);
-// });
-
-// POST
-
-// PATCH
+    if (id) {
+      let singleHero = {};
+      let newArray = [];
+      superheroes.forEach((hero) => {
+        if (hero.id !== id) {
+          newArray = [...newArray, hero];
+        } else {
+          singleHero = hero;
+        }
+      });
+      superheroes = newArray;
+      res.status(200).json(singleHero);
+    } else {
+      res.status(400).send("Invalid id");
+    }
+  });
 
 app.listen(port, () => {
   console.log("listening on port 3003");
