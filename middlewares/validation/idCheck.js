@@ -1,4 +1,3 @@
-// let superheroes = require("../../assets/superhero.json");
 
 const idCheck = (paramsId, superheroes) => {
 
