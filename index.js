@@ -2,7 +2,7 @@ let superheroes = require("./assets/superhero.json");
 const express = require("express");
 const { check, body } = require("express-validator");
 const idCheck = require("./middlewares/validation/idCheck.js");
-const { isDuplicate, addHeroValidation, heroValidation} = require("./middlewares/validation/addHeroValidation")
+const { isDuplicate, addHeroCheck, addHeroValidation} = require("./middlewares/validation/addHeroValidation")
 const app = express();
 const port = 3003;
 
@@ -63,7 +63,7 @@ app
   // });
   
   // POST single hero
-  app.post('/', addHeroValidation, heroValidation, (req, res) => {
+  app.post('/', addHeroCheck, addHeroValidation, (req, res) => {
     const body = req.body;
 
     // Check if already stored.

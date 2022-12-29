@@ -4,7 +4,7 @@ exports.isDuplicate = (heroName, superheroes) => {
   return superheroes.findIndex(hero => hero.name === heroName);
 }
 
-exports.addHeroValidation = [
+exports.addHeroCheck = [
   body(["name", "publisher", "alter_ego", "characters"] )
   .exists()
   .trim()
@@ -31,7 +31,7 @@ exports.addHeroValidation = [
 
 ]
 
-exports.heroValidation = (req, res, next) => {
+exports.addHeroValidation = (req, res, next) => {
   const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
