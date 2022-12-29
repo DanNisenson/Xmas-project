@@ -1,4 +1,4 @@
-
+// check if super-hero is in data-base
 const idCheck = (paramsId, superheroes) => {
 
   let id = parseInt(paramsId);

@@ -19,9 +19,9 @@ exports.addHeroCheck = [
   .exists()
   .trim()
   .isLength({ min: 5 })
-  .withMessage("Alter ego is too short")
+  .withMessage("First appearance is too short")
   .isLength({ max: 40 })
-  .withMessage("Alter ego is too long"),
+  .withMessage("First appearance is too long"),
   
   body("image")
   .exists()
@@ -30,6 +30,8 @@ exports.addHeroCheck = [
   .withMessage("Must provide valid URL")
 
 ]
+
+exports.editHeroCheck = this.addHeroCheck.map(field => field.optional());
 
 exports.addHeroValidation = (req, res, next) => {
   const errors = validationResult(req);
