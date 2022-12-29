@@ -1,24 +1,11 @@
 let superheroes = require("./assets/superhero.json");
 const express = require("express");
+const idCheck = require("./middlewares/validation/idCheck.js")
 const app = express();
 const port = 3003;
 
 app.use(express.json());
 // app.use(express.urlencoded());
-
-
-// validations
-
-const idCheck = (paramsId) => {
-  let id = parseInt(paramsId);
-
-  if (superheroes.findIndex(hero => hero.id === id) === -1) {
-    return false;
-  } else {
-    return id;
-  }
-};
-
 
 
 // METHODS
@@ -32,7 +19,7 @@ app.get("/", (req, res) => {
 app
   .route("/:id")
   .get((req, res) => {
-    const id = idCheck(req.params.id);
+    const id = idCheck(req.params.id, superheroes);
 
     if (id) {
       const singleHero = superheroes.filter((hero) => hero.id === id);
@@ -42,7 +29,7 @@ app
     }
   })
   .delete((req, res) => {
-    const id = idCheck(req.params.id);
+    const id = idCheck(req.params.id, superheroes);
 
     if (id) {
       let singleHero = {};
