@@ -80,8 +80,9 @@ app.post("/", addHeroCheck, addHeroValidation, (req, res) => {
 
   // Check if already stored.
   //  There has to be a way to do this proper.
-  if (isDuplicate(body.name, superheroes) !== -1)
+  if (isDuplicate(body.name, superheroes) !== -1) {
     return res.status(400).json({ errors: "Super hero already included" });
+  }
 
   const newId = superheroes[superheroes.length - 1].id + 1;
 

@@ -1,6 +1,7 @@
 const { check, body, validationResult } = require('express-validator');
 
 exports.isDuplicate = (heroName, superheroes) => {
+
   return superheroes.findIndex(hero => hero.name === heroName);
 }
 
