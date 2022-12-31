@@ -1,6 +1,7 @@
-let superheroes = require("./assets/superhero.json");
 const express = require("express");
 const { check, body } = require("express-validator");
+var cors = require('cors');
+let superheroes = require("./assets/superhero.json");
 const idCheck = require("./middlewares/validation/idCheck");
 const fieldCheck = require("./middlewares/validation/fieldCheck");
 const {
@@ -14,6 +15,7 @@ const {
 const app = express();
 const port = 3003;
 app.use(express.json());
+app.use(cors());
 
 // METHODS
 
