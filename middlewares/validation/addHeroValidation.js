@@ -32,6 +32,7 @@ exports.addHeroCheck = [
 
 ]
 
+// ???
 exports.editHeroCheck = this.addHeroCheck.map(field => field.optional());
 
 exports.addHeroValidation = (req, res, next) => {

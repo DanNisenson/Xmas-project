@@ -1,6 +1,6 @@
 const express = require("express");
 const { check, body } = require("express-validator");
-var cors = require('cors');
+var cors = require("cors");
 let superheroes = require("./assets/superhero.json");
 const idCheck = require("./middlewares/validation/idCheck");
 const fieldCheck = require("./middlewares/validation/fieldCheck");
@@ -60,12 +60,23 @@ app
     const id = idCheck(req.params.id, superheroes);
 
     if (id) {
-      const body = req.body;
-      let singleHero = superheroes.filter((hero) => hero.id === id);
-      singleHero = fieldCheck(body, singleHero[0]);
+      let newInfo = req.body;
+      let singleHero = superheroes.filter((hero) => hero.id === id)[0];
+      newInfo = fieldCheck(newInfo, singleHero);
 
       if (singleHero) {
-        res.status(200).json(singleHero);
+        newInfo.id = Number(newInfo.id);
+        superheroes = superheroes.map((hero) => {
+          if (hero.id !== newInfo.id) {
+            return hero;
+          } else {
+            return {
+              ...singleHero,
+              ...newInfo,
+            };
+          }
+        });
+        res.status(200).json(superheroes);
       } else {
         res.status(400).send("Invalid field");
       }
